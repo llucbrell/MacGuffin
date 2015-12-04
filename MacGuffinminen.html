@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Online moviescript editor. Write, print, or insert your own ScreenWritting into your website. Simple version to work with long scripts.">
+<meta name="keywords" content="macguffin,mcguffin,script,scriptwritting,screenwriting,editor,alternative,celtx,final,draft,web,app,aplication,software,writting,write,free,opensource,moviescript,movie,scene,dialogue,transition,webapp,character,tool">
+
+
+<title>MacGuffin: Simple Style</title>
+<!--
+//LISTO PARA SUBIRSE// FALTA SÓLO IMPLEMENTAR LOS SALTOS DE LÍNEA PARA UNA MEJOR EXPERIENCIA DE USUARIO
+-->
+
+
+<link id="hojaEstilo" rel="stylesheet" type="text/css" href="scriptstylemin.css">
+
+
+<link rel="icon" 
+      type="image/png" 
+      href="imagenes/macfavicon.png">
+
+
+<!--añadimos librería McGuff -->
+<script type="text/javascript" src="scripts/zepto.min.js"></script>
+<!-- basica de zepto-->
+<script type="text/javascript" src="scripts/editor3.js"></script>
+<script type="text/javascript" src="scripts/botones.js"></script>
+<script type="text/javascript" src="scripts/archivado.js"></script>
+<script type="text/javascript" src="scripts/imprimir.js"></script>
+<script type="text/javascript" src="scripts/desplegables.js"></script>
+<script type="text/javascript" src="scripts/diccionariosen.js"></script>
+<script type="text/javascript" src="scripts/tiempos.js"></script>
+<script type="text/javascript" src="scripts/calendario4.js"></script>
+<script type="text/javascript" src="scripts/autosave.js"></script>
+
+
+<!-- librería jsDatePick para el calendario en modo local
+Copyright 2010 Itamar Arjuan
+  jsDatePick is distributed under the terms of the GNU General Public License.
+ --> 
+<link rel="stylesheet" type="text/css" media="all" href="jsDatePick_ltr.min.css" />
+<script type="text/javascript" src="scripts/jsDatePick.full.1.3.js"></script>
+
+
+
+
+<script>
+//EDITOR DE TEXTO     
+//SOBRE DIV
+
+
+$(function(){
+
+//Variables //creo que las últimas 3 texto, documhtml y texto2 no me hacen falta para nada
+var documento, documento2, documentohtml, texto, texto2;
+
+//creo que no hacen falta
+
+
+ documento= document.getElementById("scriptWindow");
+ documento2= document.getElementById("portada");
+
+
+//localstorage para funcionamiento de relojes y guardado automático
+localStorage.c = (localStorage.c || "0.0");//crono
+localStorage.horas=(localStorage.horas|| "0");//c.atras
+localStorage.minutos=(localStorage.minutos||"1");//c.atras
+localStorage.calendaron=(localStorage.calendaron ||'""');//calendario online
+//localStorage.autosave=(localStorage.autosave|| "<h2>1.int.habitación</h2>  <br>  <p>Se abre el navegador y aparece un editor de guiones online. Es un editor sencillo, minimalista, poco recargado, veloz y lo mejor de todo es que se puede trabajar con él de manera online.</p>  <p>Dos hermanos conversan ante el ordenador como no prestandole mucha atención.</p>  <br>  <h3>Lucas</h3> <h4>¡Mira lo que he hecho! </h4>  <br>  <h3>Blanca</h3>  <h4>¿Eso? ¿Para qué sirve?</h4><br>  <h3>Lucas</h3>  <h4>¡Para escribir guiones! </h4>  <br>  <h3>Blanca</h3>  <h4>¿De veras crees que alguien va a querer usar eso?</h4><br> <p>Lucas agacha la cabeza.. sintiéndose estúpido. El entorno de edición parece que funciona, porque el que quiera, sólo tiene que borrar estas dos escenas y empezar a escribir.</p><h5>fundido en negro</h5><br>  <h2>2.ext.lorem ipsum</h2><br>  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquam ut sem vel venenatis. Donec lacus eros, faucibus ac magna sed, tristique volutpat diam. Nullam rutrum tempus turpis in porttitor. Sed risus massa, tempor id rhoncus vitae, molestie et neque. Maecenas vel aliquet sem. Donec nec tortor sodales, blandit massa eget, sodales arcu. Vivamus tristique sed dolor quis vehicula. Aliquam erat purus, venenatis sed magna consequat, tempus dignissim enim. Nam dapibus, turpis non egestas scelerisque, nunc sem ullamcorper mi, quis pulvinar sapien dolor at enim. Aenean tristique lacus nec scelerisque sagittis. Sed elementum vitae ipsum eu malesuada. Aenean vel libero sed nunc ultrices tincidunt eget et leo. Nulla commodo iaculis posuere. Sed turpis nibh, rutrum non metus lobortis, maximus cursus nulla. </p>");
+
+//CODIGO ROTULADOS
+
+// TITULO
+
+var numeroaleatorio= Math.ceil(Math.random()*25);
+ document.getElementById("NombreApp").className = "tipofuente"+ numeroaleatorio;
+//Texto del reloj cuenta atrás
+document.getElementById("Reloj").className= "tipofuente" +numeroaleatorio;
+document.getElementById("crono").className= "tipofuente" +numeroaleatorio;
+
+//iniciamos las funciones necesarias para que todo funcione al iniciar el navegador
+editor();
+//editor(documento2);
+activabotones(true, true, true, true, true , true);
+
+generacalendarionline();
+mostrarcalendarios();
+mostraronlinecal(false);
+
+mostrardiccionarios();
+mostrarrelojes();
+portada();
+
+tiempo();//crono
+mostrarcrono(false);
+iniciolocalstor();
+
+//autosave(documento);
+calendariolocal();//llamamos a jsdatepick
+
+
+//funciona falta sólo seleccionar la tecla
+/*
+
+documento.addEventListener("input", function (ev) {
+  alert("date changed" + ev);
+}, false); 
+  
+*/
+  
+
+
+  });
+
+  </script>
+  
+
+ </head>
+
+
+
+
+
+  
+<body>
+
+<div id="MacGuffin">
+<header id="cabecera_pies">
+<div id="logoApp">
+<a href="index.html"><h1 id="NombreApp">MacGuffin</h1></a>
+ 
+ 
+
+<div id="botones">
+  <button title="SHIFT+ALT+B" accesskey="B" onclick="ejecutacomando('bold')" class="botonformato"><b>b</b></button>
+  <button title="SHIFT+ALT+I" accesskey="I" onclick="ejecutacomando('italic')" class="botonformato"><i>i</i></button>
+  <button title="SHIFT+ALT+U" accesskey="U" onclick="ejecutacomando('underline')" class="botonformato"><u>u</u></button>
+  <button title="CNTRL+Z" onclick="ejecutacomando('undo')" class="botonformato"><img src="imagenes/undo.gif" id="undo"></i></button>
+  <button title="CNTRL+Y" onclick="ejecutacomando('redo')" class="botonformato"> <img src="imagenes/undo.gif" id="redo"></i></button>
+  <button title="Dialogue SHIFT+ALT+D" accesskey="D" onclick="ejecutacomando('formatblock', 'h4')" class="botonformato"> <img src="imagenes/bocadillodoble.png" id="bocadillo"></i></button>
+  <button title="Character SHIFT+ALT+C" accesskey="C" onclick="ejecutacomando('formatblock', 'h3')" class="botonformato"> <img src="imagenes/personazul.png" id="personaje"></i></button>
+  <button title="Scene SHIFT+ALT+E" accesskey="E" onclick="ejecutacomando('formatblock', 'h2')" class="botonformato"> <img src="imagenes/clap.png" id="escena"></i></button>
+  <button title="Transition SHIFT+ALT+T" accesskey="T" onclick="ejecutacomando('formatblock', 'h5')" class="botonformato"> <img src="imagenes/trans.png" id="trans"></i></button>
+  
+
+
+  <button id="imprimir" title="Print SHIFT+ALT+P" accesskey="P"  class="botonformato"> <img src="imagenes/print3.png" id="print"></button>
+
+  <button title="Save SHIFT+ALT+S" accesskey="S" onclick="saveTextAsFile()" class="botonformato"> <img src="imagenes/save.png" id="guardar"></button>
+
+  <button title="Script Title SHIFT+ALT+W" accesskey="W" onclick="portada()" class="botonformato"> <img src="imagenes/caratula2.png" id="caratula"></button>
+ 
+ <button title="Diccionaries SHITFT+ALT+Q" accesskey="Q" onclick="mostrardiccionarios()" id="diccionariox" class="botonformato"><img src="imagenes/interrogante.png" id="diccionario"></button>
+
+ <button title="Times SHITFT+ALT+R" id="relox" accesskey="R" onclick="mostrarrelojes()" class="botonformato"><img src="imagenes/reloj2.png" id="reloj"></button>
+
+<button title="Calendars SHITFT+ALT+N" id="calendariox" accesskey="N" onclick="mostrarcalendarios()" class="botonformato"><img src="imagenes/calendario.png" id="calendario"></button>
+
+
+<div> 
+<br><form name="formulario">
+<div id="barraespaciadora">
+<span  id="cargaboton">Open Script</span>
+<input  type="file" name="archivos"
+id="archivos">
+</div></form>
+</div>
+
+
+</div>
+</div>
+<div class="hidebox" id="dicciobox" value="">
+
+  <div class="content"></button><button onclick="mostrardiccionarios()" class="closers">x</button>
+    <div>
+  <input type="radio" id="radio1" name="radios" value="all" onclick="tipediccio('Rae')"checked>
+   <label for="radio1"><img src="imagenes/macmillian.png" id="rae"></label>
+<input type="radio" id="radio2" name="radios" onclick="tipediccio('Word')" value="false">
+   <label for="radio2"><img src="imagenes/wordreference.png" id="wordreference"></label>
+<input type="radio" id="radio3" name="radios" value="true" onclick="tipediccio('jerga')">
+   <label for="radio3"><img src="imagenes/lol.jpg" id="JHH"></label> 
+
+  <!--    
+  <input type="radio" name="RAE" onclick="tipediccio('Rae')" class="tab"><img src="imagenes/rae.ico" id="rae"></i></button>
+  <input type="radio" name="Sinonimos Wordrefernece" onclick="tipediccio('Word')" class="tab"><img src="imagenes/wordreference.png" id="wordreference"></i></button>
+  <input type="radio" name="diccionario de jerga" onclick="tipediccio('jerga')" class="tab"><img src="imagenes/JHH.gif" id="JHH"></i></button>-->
+</div>
+<div>
+  <input class="inputsguf" type="text" id="terminos"  placeholder="Search word" value="" />
+  <button class="botondiccio" id="boton" type="button" onclick="buscar()">Search</button></div>
+  
+  <div id="iframedicbox"></div>
+
+</div>
+</div>
+
+
+
+<div class="hidebox" id="relojbox" value="">
+  
+  <div class="content"><button onclick="mostrarrelojes()" class="closers">x</button>
+  <div>
+  
+<input type="radio" id="radio6" name="radios" value="true" onclick="mostrarcrono(false)">
+   <label for="radio6">Alarm</label> 
+<input type="radio" id="radio7" name="radios" value="true" onclick="mostrarcrono(true)">
+   <label for="radio7">Secds.</label>    
+
+
+
+<!--
+  <button id="control" onclick="mostrarcrono(false)">alarma de trabajo</button>
+  <button id="proyecto" onclick="mostrarcrono(true)">tiempo en proyecto</button>-->
+  </div>
+  <div id="proyectotime">
+  <button name="cronometro" id="cambiar" class="botongen">St</button>
+  <button name="cuentaatras"  id="inicializar"  class="botongen">Reset</button>
+  <span id="crono">0.0</span> <br>Seconds
+  </div>
+
+  <div id="controltime">
+    <form name="frm">
+           
+           <select type="text" name="hour"/>
+  <option value ="0">0</option>    
+  <option value ="1">1</option>
+  <option value ="2">2</option>
+  <option value ="3">3</option>
+  <option value ="4">4</option>
+  <option value ="5">5</option>
+  <option value ="6">6</option>
+  <option value ="7">7</option>
+  <option value ="8">8</option>
+  
+          </select>
+          <select type="text" name="mins"/>
+  <option value ="0">0</option>
+  <option value ="15">15</option>
+  <option value ="30">30</option>
+  <option value ="45">45</option>
+  
+          </select>
+            
+            <input type="button" value="ok" onclick="startcuenta()">
+        </form>
+<span id="hours"></span>
+<span id="Reloj" class="numeros">0</span>
+  </div>
+
+ </div>
+
+</div>
+
+<div class="hidebox" id="calendarbox" value=""><div class="content"><button onclick="mostrarcalendarios()" class="closers">x</button>
+<div>
+<input type="radio" id="radio4" name="radios" value="true" onclick="mostraronlinecal(true)">
+   <label for="radio4">Local</label> 
+<input type="radio" id="radio5" name="radios" value="true" onclick="mostraronlinecal(false)">
+   <label for="radio5">Online</label>    
+
+<!--
+<button id="Lcalendar" onclick="mostraronlinecal(true)">LocalCalendar</button>
+<button id="Ocalendar" onclick="mostraronlinecal(false)">OnlineCalendar</button>
+-->
+
+</div>
+
+<div id="divonlinecalendar"><button id="Addonlinecalendar" onclick="despliegainput(true)">+</button>
+
+<div id="divaddcalendar">
+  <button class="botoncalendar" id="boton" type="button" onclick="addcalendar()">N Calendar</button>
+  <input class="inputsguff" type="text" id="inputcalendar"  placeholder="HTML code from google" value="" />
+ </div> 
+
+<div id="insertonlinecalendar">OnlineCalendar uses google calendar API but remember, if you work to install it again if you work in another browser. To install, follow the instructions in this <a name="instrucciones google" href="https://support.google.com/calendar/answer/41207?hl=es" id="linkgooglecalendar">link...</a> </div>
+</div>
+
+
+<div id="divlocalcalendar">
+
+<div id="diveventcalendar">
+ <div id="divaddcalendar"> 
+  <input class="inputsguff" type="text" id="inputloccalendar"  placeholder="Event name" value="" />
+ </div> 
+</div>
+
+<div id="insertlocalcalendar" style="margin:10px 0 30px 0;  width:205px; height:230px;"></div>
+<div id="fechas"><button class="botoncalendar" onclick="reiniciafechas()">Reset Alarm</button>
+<div id="fechaslocalcal"><span id="spanaviso">No event to remember, please, select one.</span></div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+</header>
+
+
+
+
+
+
+<section>
+
+
+
+
+
+
+   <div id="portada" spellcheck="true" contentEditable="true" value=""><h1 id="tituloguion">Título</h1><h3 id="autor">Author</h3><h5>Telp. e-mail, etc,.</h5></div>
+
+  <div id="scriptWindow" lang="en"  spellcheck="true" accept-charset="UTF-8"contentEditable="true">
+ 
+
+  
+  <h2>INT. PHIL'S ROOM - DAWN</h2>
+
+          <p>Phil sits up in bed and looks around the room. The decor is
+          typical bed and breakfast, flocked wallpaper, framed prints,
+          and an odd assortment of mismatched furniture. His suit is
+          hanging neatly on the back of the closet door and his suitcase
+          is open on a stand at the foot of the bed, still neatly packed.</p>
+          <p>A iradio, DEEJAY and his SIDEKICK come on with hyped-up,
+          drivetime Chappy talk." Phil stares at the radio and listens
+          to them.</p><br>
+
+           <h3>DEEJAY</h3>
+           <h4>Okay, campers, rise and shine,
+           and don't forget your booties
+           because it's COOOLD out there</h4><br>
+
+          <p>TODAY1
+          Phil grimaces and swings out of bed.</p><br>
+
+           <h3>SIDEKICK</h3>
+           <h4>It's cold out there everyday.
+           What is this.. Miami Beach?</h4><br>
+          
+          <p>The deejay laughs. Phil shakes his head at the cheesy repartee
+          as he crosses to the sink and starts brushing his teeth.</p><br>
+
+           <h3>DEEJAY</h3>
+           <h4>Not hardly. And you can expect
+           hazardous travel later today with
+           that, you know, blizzard thing..</h4><br>
+
+           <h3>SIDEKICK</h3>
+          <h4>That "blizzard thing"?</h4><br>
+
+          <p>Phil splashes some water on his face and prepares to shave.</p><br>
+
+           <h3>SIDEKICK (CONT.)</h3>
+           <h4>Oh, here's the report: the
+           National Weather Service is
+           calling for a big blizzard thing.</h4><br>
+
+           <h3>DEEJAY</h3>
+           <h4>Yes they are, but there's another
+           reason today is very special..</h4><br>
+
+           <h3>SIDEKICK</h3>
+           <h4>Es pec ia lly cold..</h4><br>
+
+           <h3>DEEJAY</h3>
+           <h4>Especially cold, okay, but the
+           big question on everybody's lips..</h4><br>
+
+           <h3>SIDEKICK</h3>
+           <h4>Ch ap pe d lips..</h4><br>
+
+           <h3>DEEJAY</h3>
+           <h4>...on their chapped lips, right..
+           Do you think Phil's going to come
+           out and see his shadow?</h4><br>
+
+           <h3>SIDEKICK</h3>
+           <h4>Punxsutawney Phil.</h4><br>
+         <p> Phil looks up at himself in the mirror, admiring his own face.</p><br>
+
+           <h3>DEEJAY</h3>
+           <h4>That's right, rodent lovers! IT'S..</h4><br>
+           
+
+           <h3>BOTH DEEJAYS</h3>
+           <h4><a href="MacAbout.html">MACGUFFIN</a>'s Day</h4><br>
+          <p>SOUND EFFECT of GRUNTING GROUNDHOGS.
+          Phil grunts at his reflection in the mirror.</p><br>
+
+           <h3>PHIL
+           (to himself)</h3>
+           <h4>Never again. ¡I'll never write this scene again!</h4><br>
+
+           <h5>CUT TO:</h5><br><br>
+
+</div>
+
+
+
+
+  </section>
+  
+  </div>
+    </body>
+</html>

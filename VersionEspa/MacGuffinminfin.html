@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Editor online para escribir guiones, imprimir o insertarlos en tu web. Versión simplificada para trabajar con guiones de gran extensión.">
+<meta name="keywords" content="macguffin,mcguffin,guión,script,scriptwritting,editor,alternativa,celtx,final,draft,web,app,aplicación,software,programa,escritura,escribir,libre,opensource,gratis,herramienta">
+
+
+<title>MacGuffin: Estilo simple</title>
+<!--
+//LISTO PARA SUBIRSE// FALTA SÓLO IMPLEMENTAR LOS SALTOS DE LÍNEA PARA UNA MEJOR EXPERIENCIA DE USUARIO
+-->
+
+
+<link id="hojaEstilo" rel="stylesheet" type="text/css" href="scriptstylemin.css">
+
+
+<link rel="icon" 
+      type="image/png" 
+      href="imagenes/macfavicon.png">
+
+
+<!--añadimos librería McGuff -->
+<script type="text/javascript" src="scripts/zepto.min.js"></script>
+<!-- basica de zepto-->
+<script type="text/javascript" src="scripts/editor3.js"></script>
+<script type="text/javascript" src="scripts/botones.js"></script>
+<script type="text/javascript" src="scripts/archivado.js"></script>
+<script type="text/javascript" src="scripts/imprimir.js"></script>
+<script type="text/javascript" src="scripts/desplegables.js"></script>
+<script type="text/javascript" src="scripts/diccionariosspan.js"></script>
+<script type="text/javascript" src="scripts/tiempos.js"></script>
+<script type="text/javascript" src="scripts/calendario4.js"></script>
+<script type="text/javascript" src="scripts/autosave.js"></script>
+
+
+<!-- librería jsDatePick para el calendario en modo local
+Copyright 2010 Itamar Arjuan
+  jsDatePick is distributed under the terms of the GNU General Public License.
+ --> 
+<link rel="stylesheet" type="text/css" media="all" href="jsDatePick_ltr.min.css" />
+<script type="text/javascript" src="scripts/jsDatePick.full.1.3.js"></script>
+
+
+
+
+<script>
+//EDITOR DE TEXTO     
+//SOBRE DIV
+
+
+$(function(){
+
+//Variables //creo que las últimas 3 texto, documhtml y texto2 no me hacen falta para nada
+var documento, documento2, documentohtml, texto, texto2;
+
+//creo que no hacen falta
+
+
+ documento= document.getElementById("scriptWindow");
+ documento2= document.getElementById("portada");
+
+
+//localstorage para funcionamiento de relojes y guardado automático
+localStorage.c = (localStorage.c || "0.0");//crono
+localStorage.horas=(localStorage.horas|| "0");//c.atras
+localStorage.minutos=(localStorage.minutos||"1");//c.atras
+localStorage.calendaron=(localStorage.calendaron ||'""');//calendario online
+//localStorage.autosave=(localStorage.autosave|| "<h2>1.int.habitación</h2>  <br>  <p>Se abre el navegador y aparece un editor de guiones online. Es un editor sencillo, minimalista, poco recargado, veloz y lo mejor de todo es que se puede trabajar con él de manera online.</p>  <p>Dos hermanos conversan ante el ordenador como no prestandole mucha atención.</p>  <br>  <h3>Lucas</h3> <h4>¡Mira lo que he hecho! </h4>  <br>  <h3>Blanca</h3>  <h4>¿Eso? ¿Para qué sirve?</h4><br>  <h3>Lucas</h3>  <h4>¡Para escribir guiones! </h4>  <br>  <h3>Blanca</h3>  <h4>¿De veras crees que alguien va a querer usar eso?</h4><br> <p>Lucas agacha la cabeza.. sintiéndose estúpido. El entorno de edición parece que funciona, porque el que quiera, sólo tiene que borrar estas dos escenas y empezar a escribir.</p><h5>fundido en negro</h5><br>  <h2>2.ext.lorem ipsum</h2><br>  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquam ut sem vel venenatis. Donec lacus eros, faucibus ac magna sed, tristique volutpat diam. Nullam rutrum tempus turpis in porttitor. Sed risus massa, tempor id rhoncus vitae, molestie et neque. Maecenas vel aliquet sem. Donec nec tortor sodales, blandit massa eget, sodales arcu. Vivamus tristique sed dolor quis vehicula. Aliquam erat purus, venenatis sed magna consequat, tempus dignissim enim. Nam dapibus, turpis non egestas scelerisque, nunc sem ullamcorper mi, quis pulvinar sapien dolor at enim. Aenean tristique lacus nec scelerisque sagittis. Sed elementum vitae ipsum eu malesuada. Aenean vel libero sed nunc ultrices tincidunt eget et leo. Nulla commodo iaculis posuere. Sed turpis nibh, rutrum non metus lobortis, maximus cursus nulla. </p>");
+
+//CODIGO ROTULADOS
+
+// TITULO
+
+var numeroaleatorio= Math.ceil(Math.random()*25);
+ document.getElementById("NombreApp").className = "tipofuente"+ numeroaleatorio;
+//Texto del reloj cuenta atrás
+document.getElementById("Reloj").className= "tipofuente" +numeroaleatorio;
+document.getElementById("crono").className= "tipofuente" +numeroaleatorio;
+
+//iniciamos las funciones necesarias para que todo funcione al iniciar el navegador
+editor();
+//editor(documento2);
+activabotones(true, true, true, true, true , true);
+
+generacalendarionline();
+mostrarcalendarios();
+mostraronlinecal(false);
+
+mostrardiccionarios();
+mostrarrelojes();
+portada();
+
+tiempo();//crono
+mostrarcrono(false);
+iniciolocalstor();
+
+//autosave(documento);
+calendariolocal();//llamamos a jsdatepick
+
+
+//funciona falta sólo seleccionar la tecla
+/*
+
+documento.addEventListener("input", function (ev) {
+  alert("date changed" + ev);
+}, false); 
+  
+*/
+  
+
+
+  });
+
+  </script>
+  
+
+ </head>
+
+
+
+
+
+  
+<body>
+
+<div id="MacGuffin">
+<header id="cabecera_pies">
+<div id="logoApp">
+<a href="../index.html"><h1 id="NombreApp">MacGuffin</h1></a>
+ 
+
+<div id="botones">
+  <button title="SHIFT+ALT+B" accesskey="B" onclick="ejecutacomando('bold')" class="botonformato"><b>b</b></button>
+  <button title="SHIFT+ALT+I" accesskey="I" onclick="ejecutacomando('italic')" class="botonformato"><i>i</i></button>
+  <button title="SHIFT+ALT+U" accesskey="U" onclick="ejecutacomando('underline')" class="botonformato"><u>u</u></button>
+  <button title="CNTRL+Z" onclick="ejecutacomando('undo')" class="botonformato"><img src="imagenes/undo.gif" id="undo"></i></button>
+  <button title="CNTRL+Y" onclick="ejecutacomando('redo')" class="botonformato"> <img src="imagenes/undo.gif" id="redo"></i></button>
+  <button title="Dialogo SHIFT+ALT+D" accesskey="D" onclick="ejecutacomando('formatblock', 'h4')" class="botonformato"> <img src="imagenes/bocadillodoble.png" id="bocadillo"></i></button>
+  <button title="Personaje SHIFT+ALT+C" accesskey="C" onclick="ejecutacomando('formatblock', 'h3')" class="botonformato"> <img src="imagenes/personazul.png" id="personaje"></i></button>
+  <button title="Escena SHIFT+ALT+E" accesskey="E" onclick="ejecutacomando('formatblock', 'h2')" class="botonformato"> <img src="imagenes/clap.png" id="escena"></i></button>
+  <button title="Transición SHIFT+ALT+T" accesskey="T" onclick="ejecutacomando('formatblock', 'h5')" class="botonformato"> <img src="imagenes/trans.png" id="trans"></i></button>
+  
+
+
+  <button id="imprimir" title="Imprimir SHIFT+ALT+P" accesskey="P"  class="botonformato"> <img src="imagenes/print3.png" id="print"></button>
+
+  <button title="Guardar SHIFT+ALT+S" accesskey="S" onclick="saveTextAsFile()" class="botonformato"> <img src="imagenes/save.png" id="guardar"></button>
+
+  <button title="Portada Guión SHIFT+ALT+W" accesskey="W" onclick="portada()" class="botonformato"> <img src="imagenes/caratula2.png" id="caratula"></button>
+ 
+ <button title="Diccionarios SHITFT+ALT+Q" accesskey="Q" onclick="mostrardiccionarios()" id="diccionariox" class="botonformato"><img src="imagenes/interrogante.png" id="diccionario"></button>
+
+ <button title="Reloj SHITFT+ALT+R" id="relox" accesskey="R" onclick="mostrarrelojes()" class="botonformato"><img src="imagenes/reloj2.png" id="reloj"></button>
+
+<button title="Calencario SHITFT+ALT+N" id="calendariox" accesskey="N" onclick="mostrarcalendarios()" class="botonformato"><img src="imagenes/calendario.png" id="calendario"></button>
+
+
+<div> 
+<br><form name="formulario">
+<div id="barraespaciadora">
+<span  id="cargaboton">Abrir Archivo</span>
+<input  type="file" name="archivos"
+id="archivos">
+</div></form>
+</div>
+
+
+</div>
+</div>
+<div class="hidebox" id="dicciobox" value="">
+
+  <div class="content"></button><button onclick="mostrardiccionarios()" class="closers">x</button>
+    <div>
+  <input type="radio" id="radio1" name="radios" value="all" onclick="tipediccio('Rae')"checked>
+   <label for="radio1"><img src="imagenes/rae.ico" id="rae"></label>
+<input type="radio" id="radio2" name="radios" onclick="tipediccio('Word')" value="false">
+   <label for="radio2"><img src="imagenes/wordreference.png" id="wordreference"></label>
+<input type="radio" id="radio3" name="radios" value="true" onclick="tipediccio('jerga')">
+   <label for="radio3"><img src="imagenes/JHH.gif" id="JHH"></label> 
+
+  <!--    
+  <input type="radio" name="RAE" onclick="tipediccio('Rae')" class="tab"><img src="imagenes/rae.ico" id="rae"></i></button>
+  <input type="radio" name="Sinonimos Wordrefernece" onclick="tipediccio('Word')" class="tab"><img src="imagenes/wordreference.png" id="wordreference"></i></button>
+  <input type="radio" name="diccionario de jerga" onclick="tipediccio('jerga')" class="tab"><img src="imagenes/JHH.gif" id="JHH"></i></button>-->
+</div>
+<div>
+  <input class="inputsguf" type="text" id="terminos"  placeholder="Términos de búsqueda" value="" />
+  <button class="botondiccio" id="boton" type="button" onclick="buscar()">Buscar</button></div>
+  
+  <div id="iframedicbox"></div>
+
+</div>
+</div>
+
+
+
+<div class="hidebox" id="relojbox" value="">
+  
+  <div class="content"><button onclick="mostrarrelojes()" class="closers">x</button>
+  <div>
+  
+<input type="radio" id="radio6" name="radios" value="true" onclick="mostrarcrono(false)">
+   <label for="radio6">Alarm</label> 
+<input type="radio" id="radio7" name="radios" value="true" onclick="mostrarcrono(true)">
+   <label for="radio7">Segs.</label>    
+
+
+
+<!--
+  <button id="control" onclick="mostrarcrono(false)">alarma de trabajo</button>
+  <button id="proyecto" onclick="mostrarcrono(true)">tiempo en proyecto</button>-->
+  </div>
+  <div id="proyectotime">
+  <button name="cronometro" id="cambiar" class="botongen">St</button>
+  <button name="cuentaatras"  id="inicializar"  class="botongen">Reset</button>
+  <span id="crono">0.0</span> <br>Segundos
+  </div>
+
+  <div id="controltime">
+    <form name="frm">
+           
+           <select type="text" name="hour"/>
+  <option value ="0">0</option>    
+  <option value ="1">1</option>
+  <option value ="2">2</option>
+  <option value ="3">3</option>
+  <option value ="4">4</option>
+  <option value ="5">5</option>
+  <option value ="6">6</option>
+  <option value ="7">7</option>
+  <option value ="8">8</option>
+  
+          </select>
+          <select type="text" name="mins"/>
+  <option value ="0">0</option>
+  <option value ="15">15</option>
+  <option value ="30">30</option>
+  <option value ="45">45</option>
+  
+          </select>
+            
+            <input type="button" value="ok" onclick="startcuenta()">
+        </form>
+<span id="hours"></span>
+<span id="Reloj" class="numeros">0</span>
+  </div>
+
+ </div>
+
+</div>
+
+<div class="hidebox" id="calendarbox" value=""><div class="content"><button onclick="mostrarcalendarios()" class="closers">x</button>
+<div>
+<input type="radio" id="radio4" name="radios" value="true" onclick="mostraronlinecal(true)">
+   <label for="radio4">Local</label> 
+<input type="radio" id="radio5" name="radios" value="true" onclick="mostraronlinecal(false)">
+   <label for="radio5">Online</label>    
+
+<!--
+<button id="Lcalendar" onclick="mostraronlinecal(true)">LocalCalendar</button>
+<button id="Ocalendar" onclick="mostraronlinecal(false)">OnlineCalendar</button>
+-->
+
+</div>
+
+<div id="divonlinecalendar"><button id="Addonlinecalendar" onclick="despliegainput(true)">+</button>
+
+<div id="divaddcalendar">
+  <button class="botoncalendar" id="boton" type="button" onclick="addcalendar()">N Calendario</button>
+  <input class="inputsguff" type="text" id="inputcalendar"  placeholder="Código HTML d google" value="" />
+ </div> 
+
+<div id="insertonlinecalendar">OnlineCalendar integra de momento sólo calendarios de Google Calendar. Una vez insertado, se ejecutará sólo en este navegador, para otros navegadores tendrás que instalarlo de nuevo. Ok, ahora sólo tienes que seguir las instrucciones de este <a name="instrucciones google" href="https://support.google.com/calendar/answer/41207?hl=es" id="linkgooglecalendar">link...</a> </div>
+</div>
+
+
+<div id="divlocalcalendar">
+
+<div id="diveventcalendar">
+ <div id="divaddcalendar"> 
+  <input class="inputsguff" type="text" id="inputloccalendar"  placeholder="Nombre del evento a recordar" value="" />
+ </div> 
+</div>
+
+<div id="insertlocalcalendar" style="margin:10px 0 30px 0;  width:205px; height:230px;"></div>
+<div id="fechas"><button class="botoncalendar" onclick="reiniciafechas()">Reiniciar fechas</button>
+<div id="fechaslocalcal"><span id="spanaviso">No hay recordatorio seleccionado. Recuerda, usamos localStorage para almacenar el evento. Si usas otro navegador, deberás volver a introducir dicho evento.</span></div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+</header>
+
+
+
+
+
+
+<section>
+
+
+
+
+
+
+   <div id="portada" spellcheck="true" contentEditable="true" value=""><h1 id="tituloguion">Título</h1><h3 id="autor">Escritor</h3><h5>Telf. e-mail, etc,.</h5></div>
+
+  <div id="scriptWindow" lang="es"  spellcheck="true" accept-charset="UTF-8"contentEditable="true">
+ 
+
+  <h2>Interior. Vestíbulo de un cine. Día.</h2><br>Una larga cola de gente esperando. Murmullos de conversaciones. Alvy y Annie se hallan en mitad del grupo. A su lado, un hombre perora animadamente.<br><br><h3>Hombre en la cola: </h3><h4>El martes vimos la película de Fellini. No es una de las mejores. Le falta una estructura coherente. Ya sabes, da la impresión de no estar absolutamente seguro de lo que quiere decir. Claro que esencialmente me pareció siempre que no era más que un director que domina la técnica. «La Strada» era una gran película, desde luego. Grande en utilización de imágenes negativas másque nada. Pero la simple coherencia...<br></h4><br><h3>Alvy: </h3><h4>Me, me, me va a dar un ataque.</h4><br><h3>Annie: </h3><h4>Pues no le escuches.</h4><br><h3>Hombre en la cola (al mismo tiempo): <br></h3><h4>En fin, tendría que ligar una idea con la otra. ¿Entiendes lo que te quiero decir?<br></h4><br><h3>Alvy (suspira): </h3><h4>Si me grita sus opiniones al oído.</h4><br><h3>Hombre en la cola (al mismo tiempo): </h3><h4>Es como «Giulietta de los espíritus» o «Satyricon», me parecieron las dos de una complacencia increíble. Es el problema de Fellini, vaya. Es uno de los directores que más se complace. No te quepa la menor duda.<br></h4><br><h3>Alvy (al mismo tiempo): </h3><h4>La palabra clave es complacencia.</h4><br><h3>Hombre en la cola (al mismo tiempo): </h3><h4>Sin conseguirlo, bueno, pues dejémoslo así.</h4><br><h3>Alvy (al mismo tiempo): </h3><h4>¿Por qué estás de mal humor?</h4><br><h3>Annie: </h3><h4>No fui a la analista. Me quedé dormida.</h4><br><h3>Alvy:</h3><h4>&nbsp;¿Cómo es posible que te quedaras dormida?</h4><br><h3>Annie:</h3><h4>&nbsp;El despertador.</h4><br><h3>Alvy: </h3><h4>¿Te das cuenta de la agresividad hacia mí que representa ese gesto?</h4><br><br><h3>Annie: <br></h3><h4>Ya sé, te refieres a nuestro problema sexual, ¿verdad?</h4><br><h3>Alvy: <br></h3><h4>Oye, tú... ¿es que la cola entera del New Yorker tiene que enterarse de la frecuencia de nuestras relaciones sexuales?<br></h4><br><h3>Hombre en la cola: <br></h3><h4>Es como Samuel Beckett, ya sabes, admiro la técnica, pero, pero no lo siento en las tripas.<br></h4><br><h3>Alvy: <br></h3><h4>Ya me gustaría que sintieras en las tripas un buen puñetazo.</h4><br><h3>Hombre en la cola (al mismo tiempo): <br></h3><h4>Si no se consigue eso...</h4><br><h3>Annie: <br></h3><h4>¡Basta ya, Alvy!</h4><br><h3>Alvy (retorciéndose las manos):</h3><h4>&nbsp;¡Oye, que me escupe en el cuello! Me está escupiendo en el cuello al hablar, ¿sabes?<br></h4><br><h3>Hombre en la cola (al mismo tiempo):</h3><h4>&nbsp;Y luego, lo más importante de todo, es que se trata de la visión de un cómico.</h4><br><h3>Annie (al mismo tiempo):</h3><h4>&nbsp;¿Y sabes tú otra cosa? ¡Eres tan egocéntrico que, si a mí se me olvida ir a la analista, sólo te preocupa lo que eso pueda afectarte a ti!<br></h4><br><h3>Hombre en la cola (al mismo tiempo): <br></h3><h4>Miedo a las mujeres, eso es lo que es.</h4><br><h3>Alvy (al mismo tiempo)</h3><h4>&nbsp;¿Qué te juegas a que es su primera cita?</h4><br><h3>Hombre en la cola (al mismo tiempo):</h3><h4>&nbsp;Una visión muy corta de miras. (Se pone un cigarrillo en la boca.)<br></h4><br><h3>Alvy: <br></h3><h4>¿A que se han conocido por un anuncio en la «New York Review of Books»? «Académico en la treintena desea conocer a mujer interesada en Mozart, James Joyce y la sodomía.» (Suspira) ¿Qué quiere decir eso de «nuestro problema sexual»?<br></h4><br><h3>Annie:</h3><h4>&nbsp;¡Oh!</h4><br><h3>Alvy (al mismo tiempo): <br></h3><h4>Yo, yo, bueno, soy relativamente normal para estar criado en Brooklyn.<br></h4><br><h3>Annie:</h3><h4>&nbsp;Vale, te presento mis disculpas. ¡Mi problema sexual! ¡Muy bien, mi problema sexual! ¿Eh? <br></h4><h4><br></h4><h4><br></h4>El hombre frente a Annie y Alvy se vuelve para mirarles.<br><br><h3>Alvy:</h3><h4>&nbsp;Eso no lo he leído nunca. ¿No será, no será, de la novela de, de Henry James, eso es, el que escribió la continuación de «La vuelta de tuerca»?<br></h4><br><h3>Hombre en la cola (al mismo tiempo): <br></h3><h4>Es la influencia de la televisión. Sí, ahora Marshall McLuhan es, dentro de los límites de su esencia, una, una gran, ah, una gran fuerza, ¿entiendes? Un medio caliente... en cuanto se opone a un...<br></h4><br><h3>Alvy (al mismo tiempo):</h3><h4>&nbsp;¡Qué no haría yo por cubrirle de mierda hasta las cejas!</h4><br>Alvy gesticula con frustración. El hombre en la cola se le encara.<br><br><h3>Alvy (suspira, habla a la cámara):</h3><h4>&nbsp;¿Qué se puede hacer cuando te encuentras atrapado en la cola con un tipo como ése detrás tuyo? Vamos, es enloquecedor.<br></h4><br><h3>Hombre en la cola: <br></h3><h4>Un momento, ¿por qué no puedo expresar mi opinión? ¡Este es un país libre!<br></h4><br><h3>Alvy: <br></h3><h4>Naturalmente que la puede expresar... ¿Por qué tiene que expresarla a voz en grito? Quiero decir, ¿no le da vergüenza pontificar de esa forma? Ah, y eso es lo mejor, Marshall McLuhan. ¡Usted no sabe una palabra de Marshall McLuhan... ni de su obra!<br></h4><br><h3>Hombre en la cola (al mismo tiempo):</h3><h4>&nbsp;¡Un momento! ¿De veras? ¿De veras? ¡Pues da la casualidad de que en la universidad de Columbia tengo un curso sobre «Medios televisivos y Cultura»! Por eso creo que mis intuiciones sobre el señor McLuhan, bueno, son perfectamente válidas.<br></h4><br><h3>Alvy:</h3><h4>&nbsp;¿Conque sí, eh?</h4><br><h3>Hombre en la cola:</h3><h4>&nbsp;¡Sí!</h4><br><h3>Alvy (al mismo tiempo):</h3><h4>&nbsp;Pues tiene gracia, porque resulta que el señor McLuhan está aquí en este preciso momento.<br></h4><br>Alvy se dirige a un poster, tras el cual se halla Marshall McLuhan, y le hace aproximarse.<br><br><h3>Alvy:</h3><h4>&nbsp;Aquí, aquí, permítame... Muy bien. Venga aquí... un momento.</h4><br><h3>Hombre en la cola:</h3><h4>&nbsp;¡Oh!</h4><br><h3>Alvy (a McLuhan):</h3><h4>&nbsp;Dígaselo usted.</h4><br><h3>McLuhan:</h3><h4>&nbsp;He oído... he oído lo que estaba usted diciendo. Usted, usted no sabe nada acerca de mi obra. Hasta mis falacias las explica al revés. Que haya llegado usted a dictar un curso es algo que excede los límites de mi comprensión.<br></h4><br><h3>Alvy (a la cámara):</h3><h4>&nbsp;¡Cielos, si la vida pudiera ser siempre así!</h4><br><br><h2>Interior. Sala de cine.</h2><br>Soldados alemanes aparecen en la pantalla. Un letrero anuncia: «LE CHAGRIN ET LA PITIE». Marcel Ophüls, André Harris. «Crónica de una ciudad francesa bajo la Ocupación.»<br><br><h3>Voz del narrador: <br></h3><h4>El 14 de junio de 1944 el Ejército alemán ocupa París, sin si quiera imaginarse que 70 años después, escribirían sobre ellos en el editor de texto <a href="MAcWebEs.zip">MACGUFFFIN</a><br></h4><br>
+
+</div>
+
+
+
+
+  </section>
+  
+  </div>
+    </body>
+</html>

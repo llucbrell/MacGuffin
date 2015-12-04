@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+
+
+<title>MacGuffin</title>
+
+
+<link rel="icon" 
+      type="image/png" 
+      href="imagenes/paloicon.png">
+
+
+
+
+<!--EJEMPLO COMO DAR ESTILO A MACGUFFIN-->
+
+
+
+
+
+
+<!--añadimos librería MacGuff -->
+<!-- puedes usar también jQuery-->
+<!-- basica de zepto-->
+<script type="text/javascript" src="scripts/zepto.min.js"></script>
+<!-- añadimos la hoja de estilo y el código Javascript-->
+<link id="hojaEstilo" rel="stylesheet" type="text/css" href="scriptstyle2.css">
+<script type="text/javascript" src="scripts/guffy.js"></script>
+<!-- librería jsDatePick para el calendario en modo local
+Copyright 2010 Itamar Arjuan
+  jsDatePick is distributed under the terms of the GNU General Public License.
+ --> 
+<link rel="stylesheet" type="text/css" media="all" href="jsDatePick_ltr.min.css" /><script type="text/javascript" src="scripts/jsDatePick.full.1.3.js"></script>
+<!-- fin-->
+<script>
+$(function(){
+//Situa el editor de guiones en un div, header, section u otro lugar	
+var lugar=document.getElementById("nuevodiv");
+MacGuffin(lugar);
+//borra estas barras para activar todos los botones posibles
+// y opciones que puedes activar o desactivar
+//activabotones(true,true, true, true, true, true, true); 
+//para subir un guión tuyo para visionarse en tu web
+//$("#scriptWindow").load("CaminoAlArchivo.guf");
+});
+</script>
+
+<style type="text/css">
+/*Para usar los parámetros float, realizalo sobre la etiqueta, MacGuffin*/
+
+/*Cambiamos el color del título*/
+#NombreApp .rojo{
+	color: green;
+
+}
+#NombreApp .azul{
+	color:orange;
+}
+#MacGuffin{
+	float: right;
+}
+/*Controla el tamaño y edita la cabecera del Guffin*/
+#MacGuffinCabecera{
+  /*background: blue;*/
+	height: 150px;
+    width: 300px;
+/*display: none; para ocultar la cabecera*/
+}
+/*Controla y edita la ventana de texto
+Usamos alto y ancho para visualizar mejor el texto al estilo guión
+*/
+#scriptWindow{
+    width: 300px;
+	height: 400px;
+}
+</style>
+
+</head>
+
+
+
+
+
+  
+<body>
+<!--div donde insertamos el Guf-->	
+<div id="nuevodiv"></div>
+
+<div id="tresD">
+<p>Funciona de momento con...</p><br></br><p>¡FireFox, Opera y Chrome!</p><br><br><p style="color:green;"> Añade y personaliza <font style="color:blue;">m<font style="color:red;">c</font>guffin</font> en tu propia web, con tu propio guión.</p><br> <p><font style="color:orange;">También, si lo prefieres, puedes modificar el código a voluntad, es de código libre. (MIT)</p>
+</div>
+
+
+    </body>
+</html>

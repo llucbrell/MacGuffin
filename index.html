@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Online moviescript editor. Write, print or insert your own ScreenWritting into your website.">
+<meta name="keywords" content="macguffin,mcguffin,script,scriptwritting,screenwriting,editor,alternative,celtx,final,draft,web,app,aplication,software,writting,write,free,opensource,moviescript,movie,scene,dialogue,transition,webapp,character,tool,pluggin,website">
+
+
+
+
+<title>MacGuffin: About</title>
+  <link rel="icon" 
+      type="image/png" 
+      href="imagenes/macfavicon.png">
+
+  
+ <link id="hojaEstilo" rel="stylesheet" type="text/css" href="scriptstyleabout.css">
+  
+
+
+</head>
+
+
+<style>
+
+@font-face { 
+font-family: typewriter;
+src: url(fonts/typewriter.ttf); 
+}
+
+#agradecimiento{
+  margin-right: 25%;
+  font-size: 25px;
+  color: green;
+}
+.titulo{
+font-family: typewriter;
+ text-align: center;
+}
+
+.azul{
+  color: #3333FF;
+  
+}
+
+.rojo{
+  color:#CC0000;
+}
+
+
+li{
+  margin-right: 25%;
+}
+
+ body{
+  font-size: 18px;
+  background: url(imagenes/paloicon.png) right bottom no-repeat;
+
+ }
+ 
+  </style>
+
+<body>  
+<header>
+<div id="logosleng">
+<h1 class="titulo"><span class="azul">Mac</span><span class="rojo">Gu</span><span class="azul">ff</span><span class="rojo">in</span> & <span class="azul">mc</span><span class="rojo">gu</span><span class="azul">ff</span><span class="rojo">in</span></h1>
+
+</div>
+
+  </header> 
+  <div class="texto">
+  <p>Macguffin is an online moviescript editor. Write, print or insert your own ScreenWritting into your website. Read this lines to get a deeper understanding about this Web App. By the way, this is not a manual, it's only some coments about this project. </p></div>
+  <h3>Notes</h3>
+  <div class="texto">
+  <ul><li><p>You can use Macguffin to write your MovieScript using one of this two urls <a href="MacGuffinfin3Den.html">English Version</a> // <a href="./VersionEspa/espindex.html">Spanish Version</a> You can also use a lightly version of the app clicking on the name of the app into both links.</p></li>
+  <li><p>The spellchecker works synchronized with the browsers dictionaries. It's good to download or use a good one. Please, look at your browser's extensions for a better spellchecker experience.</p></li> 
+  <li><p>Remember, MacGuffin & mcguffin it's still in betha phase so, if you find some bug or have a suggestion I'll be glad to know about you. Please, mail to.. <span class="rojo">llucbrell@gmail.com</span> SUBJECT-- macguffin</p></li>
+  <li><p>MacGuffin, in Local and Online calendar, uses the localStorage API. If you use more than one Browser to write with this app, and you want to use the calendar features, don't forget to install the events or the Google Calendar in all your browsers. </p></li>
+  <li><p>Same as calendars, happens with timer clock and alarm.</p></li>
+  <li><p>Do you want to put MacGuffin into your website? You can download the <a href="MacWebEn.zip">lib</a>  Then, unzip the lib into your root page folder.</p></li> 
+    <p>Now, you can insert MacGuffin only writting this few lines of code into the head of your website.</p>
+    <code>
+<br>
+&ltscript type="text/javascript" src="scripts/zepto.min.js"&gt&lt/script&gt
+&ltlink id="hojaEstilo" rel="stylesheet" type="text/css" href="scriptstyle2.css"&gt
+&ltscript type="text/javascript" src="scripts/guffy.js"&gt&lt/script&gt
+&ltlink rel="stylesheet" type="text/css" media="all" href="jsDatePick_ltr.min.css" /&gt&ltscript type="text/javascript" src="scripts/jsDatePick.full.1.3.js"&gt&lt/script&gt
+<br>
+&ltscript&gt<br>
+$(function(){<br>
+//put the mcguffin into a div, header or another place  <br>
+var lugar=document.getElementById("nuevodiv");<br>
+MacGuffin(lugar);<br>
+//use this line to load your own or favorite moviescript or delete it<br>
+$("#scriptWindow").load("MyMovieScript.guf");<br>
+});<br>
+&lt/script&gt
+<br>
+    </code>
+    <br>
+    <p>Remember to use a div, header, or other HTML tag with an id="nuevodiv" to insert mcguffin's app in your site.</p>
+    <li><p>I'll be push up to this site a tutorial, very soon. If you can't wait, look at the two HTML examples I'd put in the zip. I've commented them and you find a little more info.</p></li>
+<li><p>MacGuffin it's been designed to support different Script formats, as BBC tv's Format, american Film Standards and others. By now, only default format it's avaliable, I'll upload different formats soon.</p></li></ul>
+  
+  <div class="texto">
+ 
+  <p id="agradecimiento"><b>Thanks for your interest about <span class="rojo">MacGuffin</span> & <span class="azul">mcguffin</span>, the MovieScript Editors.</b></p>  
+  </div>
+  </div>
+  
+</body>
+
+
+
+</html>
